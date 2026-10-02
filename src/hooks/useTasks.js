@@ -5,8 +5,8 @@
  *  - toggle completion
  *  - delete task
  */
-import { useCallback, useEffect, useState } from 'react';
-import { supabase } from '../lib/supabaseClient.js';
+import { useCallback, useEffect, useState } from "react";
+import { supabase } from "../lib/supabaseClient.js";
 
 function useTasks(userId) {
   const [tasks, setTasks] = useState([]);
@@ -21,10 +21,10 @@ function useTasks(userId) {
     setError(null);
 
     const { data, error: queryError } = await supabase
-      .from('tasks')
-      .select('*')
-      .eq('user_id', userId)
-      .order('created_at', { ascending: false });
+      .from("tasks")
+      .select("*")
+      // .eq("user_id", userId)
+      .order("created_at", { ascending: false });
 
     if (queryError) {
       setError(`Could not load tasks: ${queryError.message}`);
@@ -43,7 +43,7 @@ function useTasks(userId) {
   const addTask = useCallback(
     async (title) => {
       const { data, error: insertError } = await supabase
-        .from('tasks')
+        .from("tasks")
         .insert([{ title, is_complete: false, user_id: userId }])
         .select()
         .single();
@@ -57,7 +57,7 @@ function useTasks(userId) {
     [userId],
   );
 
-  /** 
+  /**
    * Toggles the is_complete flag of a task in Supabase and local state.
    *
    * @param {number} id - Task ID.
@@ -66,10 +66,10 @@ function useTasks(userId) {
   const toggleTask = useCallback(
     async (id, isComplete) => {
       const { error: updateError } = await supabase
-        .from('tasks')
+        .from("tasks")
         .update({ is_complete: isComplete })
-        .eq('id', id)
-        .eq('user_id', userId);
+        .eq("id", id)
+        .eq("user_id", userId);
 
       if (updateError) {
         throw updateError;
@@ -77,9 +77,7 @@ function useTasks(userId) {
 
       setTasks((currentTasks) =>
         currentTasks.map((task) =>
-          task.id === id
-            ? { ...task, is_complete: isComplete }
-            : task,
+          task.id === id ? { ...task, is_complete: isComplete } : task,
         ),
       );
     },
@@ -94,18 +92,16 @@ function useTasks(userId) {
   const deleteTask = useCallback(
     async (id) => {
       const { error: deleteError } = await supabase
-        .from('tasks')
+        .from("tasks")
         .delete()
-        .eq('id', id)
-        .eq('user_id', userId);
+        .eq("id", id)
+        .eq("user_id", userId);
 
       if (deleteError) {
         throw deleteError;
       }
 
-      setTasks((currentTasks) =>
-        currentTasks.filter((task) => task.id !== id),
-      );
+      setTasks((currentTasks) => currentTasks.filter((task) => task.id !== id));
     },
     [userId],
   );
