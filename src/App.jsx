@@ -67,7 +67,7 @@ import { useAuth } from "./hooks/useAuth.js";
 //  */
 
 export default function App() {
-  const { session, user, loading, signUp, signIn, signOut } = useAuth();
+  const { user, signUp, signIn, signOut } = useAuth();
 
   const [signOutError, setSignOutError] = useState("");
   const handleSignOut = async () => {
@@ -98,7 +98,7 @@ export default function App() {
           <TaskList userId={user.id} />
         </>
       )}
-      ;
+      
     </Mainlayout>
   );
 }
