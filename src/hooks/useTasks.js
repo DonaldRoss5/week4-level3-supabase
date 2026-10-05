@@ -21,10 +21,10 @@ function useTasks(userId) {
     setError(null);
 
     const { data, error: queryError } = await supabase
-      .from("tasks")
-      .select("*")
-      // .eq("user_id", userId)
-      .order("created_at", { ascending: false });
+  .from("tasks")
+  .select("*")
+  .eq("user_id", userId)
+  .order("created_at", { ascending: false });
 
     if (queryError) {
       setError(`Could not load tasks: ${queryError.message}`);
