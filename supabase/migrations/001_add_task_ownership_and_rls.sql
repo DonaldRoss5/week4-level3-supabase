@@ -29,19 +29,6 @@ grant select, insert, update, delete
   on table public.tasks
   to authenticated;
 
--- Dropping first makes this teaching migration safe to rerun.
-drop policy if exists "Users can read their own tasks"
-  on public.tasks;
-
-drop policy if exists "Users can create their own tasks"
-  on public.tasks;
-
-drop policy if exists "Users can update their own tasks"
-  on public.tasks;
-
-drop policy if exists "Users can delete their own tasks"
-  on public.tasks;
-
 create policy "Users can read their own tasks"
   on public.tasks
   for select
